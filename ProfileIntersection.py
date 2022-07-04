@@ -1,9 +1,9 @@
 import arcpy
-import math, os
+import os
 
 intersectionLayer = arcpy.GetParameterAsText(0)
 inputProfileRoute = arcpy.GetParameterAsText(1)
-inputFeatures = [intersectionLayer, inputProfileRoute]
+inputFeatures = [str(intersectionLayer), str(inputProfileRoute)]
 inputDepthRaster = arcpy.GetParameterAsText(2)
 arcpy.env.workspace = arcpy.GetParameterAsText(3)
 outputFileName = arcpy.GetParameterAsText(4)
@@ -70,7 +70,7 @@ def cleanUp():
     arcpy.Delete_management("BarPoints")
 
 def init():
-    intersections = arcpy.analysis.Intersect(inputFeatures, outputFileName)
+    intersections = arcpy.analysis.Intersect(inputFeatures, outputFileName, output_type="POINT")
     addKP(findDepth(intersections, inputProfileRoute, inputDepthRaster))
     cleanUp()
 
